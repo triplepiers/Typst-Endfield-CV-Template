@@ -7,7 +7,8 @@
 ![CV_Preview](./assets/preview.png)
 
 ## Usage
-> Typst Web 编辑器项目：[EndField_CV_Template](https://typst.app/project/wCng6z8cmIPPmmClhkoQ4r)
+> Typst Web 编辑器项目：[EndField_CV_Template](https://typst.app/project/rysGx9Z8lm01X9BS7t12gS)
+> ⚠️ 这是一份 READ-ONLY 示例，使用前需要在 [首页](https://typst.app/) Duplicate 一份可写副本
 
 - 文件结构
 
