@@ -92,8 +92,12 @@
 #let body-font = ("Gilroy", "HarmonyOS Sans SC")
 #let display = ("Novecento sans wide", "HarmonyOS Sans SC")
 #let technical = ("Novecento sans wide", "HarmonyOS Sans SC")
+#let photo-enabled = state("resume-photo-enabled", false)
+#let photo-path-state = state("resume-photo-path", none)
 
-#let resume(body) = {
+#let resume(
+  body,
+) = {
   set document(title: "Endfield_CV")
 
   set page(
@@ -106,12 +110,32 @@
     ),
     fill: paper,
     background: align(top + right)[
-      #image(
-        "assets/contour.png",
-        width: 122mm,
-        height: 64mm,
-        fit: "cover",
-      )]
+      #image("assets/contour.png", width: 122mm, height: 64mm, fit: "cover")
+    ],
+    foreground: context {
+      let photo-path = photo-path-state.get()
+      if photo-path != none and counter(page).get().first() == 1 {
+        let w = 24mm
+        let h = 32mm
+        let bar-width = 0.8mm
+        place(top + right, dx: -15mm - bar-width - 0.5mm, dy: 9mm)[
+          #box(width: w, height: h, clip: true, fill: white, inset: 1pt, stroke: 0.5pt + line-gray)[
+            #image(photo-path, width: 100%, height: 100%, fit: "cover")
+          ]
+        ]
+        place(top + right, dx: -15mm, dy: 9mm)[
+          #box(width: bar-width, height: h, fill: gradient.linear(
+            (rgb("FF1AAC"), 0%),
+            (rgb("FF1AAC"), 15%),
+            (rgb("00FFA2"), 15%),
+            (rgb("00FFA2"), 30%),
+            (rgb("FFFA00"), 30%),
+            (white.transparentize(100%), 100%),
+            angle: 90deg,
+          ))
+        ]
+      }
+    }
   )
 
   set text(
@@ -130,6 +154,7 @@
 
   body
 }
+
 
 #let micro(body) = text(font: technical, size: 6.6pt, weight: 500, fill: muted, tracking: 0.09em, body)
 
@@ -248,7 +273,7 @@
   name: "",
   tags: "",
 ) = {
-  grid(
+  context grid(
     columns: (auto, auto, 1fr, auto),
     column-gutter: 10pt,
     align: bottom,
@@ -268,9 +293,35 @@
     ],
 
     [],
-    print-test(),
+    if photo-enabled.get() { none } else { print-test() },
   )
 }
+
+
+#let header(
+  photo_path: none,
+  name: "",
+  tags: "",
+  phone: none,
+  email: none,
+  github: none,
+) = {
+  let has-info = phone != none or email != none or github != none
+  photo-enabled.update(photo_path != none)
+  photo-path-state.update(photo_path)
+
+  if photo_path != none {
+    v(3mm)
+  }
+
+  name_tags(name: name, tags: tags)
+  if has-info {
+    v(3pt)
+    info(phone: phone, email: email, github: github)
+  }
+  v(3pt)
+}
+
 
 #let footer(
   enabled: true,

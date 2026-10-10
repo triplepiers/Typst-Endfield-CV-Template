@@ -3,20 +3,14 @@
 #show: resume
 
 // --- HEADER 部分 ----
-#name_tags(
+#header(
+  photo_path: "assets/photo.png",
   name: "管理员·Endmin",
   tags: "战略指挥 / 集成工业 / 区域开拓",
-)
-
-#v(3pt)
-
-#info(
   phone: "10010101001", // (+86) xxx xxxx xxx
   email: "endministrator@endfield.industries",
   github: "triplepiers",
 )
-
-#v(3pt)
 
 // --- EXPERIENCE 部分 ----
 #section("培养与研究背景", "EDUCATION / RESEARCH")

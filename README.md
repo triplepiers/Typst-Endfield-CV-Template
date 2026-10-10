@@ -1,15 +1,22 @@
 # Endfield CV, but Typst!
 
-一份[终末地](https://endfield.hypergryph.com)风味的中文简历模板（无照片）
+一份[终末地](https://endfield.hypergryph.com)风味的中文简历模板
 
 ## Preview
 
-![CV_Preview](./assets/preview.png)
+![CV_Preview](./assets/previews/no_photo.png)
+
+### DLC 1 - Photo
+
+现已支持证件照（但是会压到第一个 section 的分割线 omo）
+
+![Photo_Header](./assets/previews/photo_header.png)
 
 ## Usage
 > Typst Web 编辑器项目：[EndField_CV_Template](https://typst.app/project/rysGx9Z8lm01X9BS7t12gS)
 >
-> ⚠️ 这是一份 READ-ONLY 示例，使用前需要在 [首页](https://typst.app/) Duplicate 一份可写副本
+> - ⚠️ 这是一份 READ-ONLY 示例，使用前需要在 [首页](https://typst.app/) Duplicate 一份可写副本
+> - Web 端与本地编译结果可能存在差异（导致跨页）
 
 - 文件结构
 
@@ -29,30 +36,37 @@
 
 ## Components
 
-### Header
+### ⚠️ Header (已重构)
 
-- 姓名 + Tag：很呆，但可以自己定义分隔符
+支持设置照片、姓名、标签和联系方式
 
-  ```
-  #name_tags(
-    name: "管理员·Endmin",
-    tags: "战略指挥 / 集成工业 / 区域开拓",
-  )
-  ```
+```typst
+#header(
+  photo_path: none, // "assets/photo.jpg"
+  name: "管理员·Endmin",
+  tags: "战略指挥 / 集成工业 / 区域开拓",
+  phone: "10010101001", 
+  email: "endministrator@endfield.industries",
+  github: "triplepiers",
+)
+```
 
-- 联系方式：目前支持 手机号（phone）、邮箱（email）、GitHub、Bilibili
+- 照片（photo_path）
 
-  ```
-  #info(
-    phone: "10010101001", 
-    email: "endministrator@endfield.industries",
-    github: "triplepiers",
-  )
-  ```
-  
+  - 设置为 `none` 时，不展示照片
+  - 设置为 <u>相对图片路径</u> 时，展示照片、且略微增大页面上边距
+
+      默认为 3 寸照片比例，理论上会自动裁切/拉伸、并居中显示
+
+- 姓名和标签
+
+  - `name`：加粗的大名，支持中英文
+  - `tags`：黄色背景的 tag，可以自定义分隔符
+
+- 联系方式：不需要的可以设置为 `none`
+
   - 手机号会格式化成 `(+86) xxx xxxx xxx`
   - GitHub <u>只需要填用户名</u>
-
 
 ### Section
 
@@ -109,3 +123,22 @@
 
   - 每一页得手动添加（是的，很呆）
 
+
+### 证件照（可选，仅首页）
+
+照片是可选项，在 `header` 的 `photo_path` 设置路径，默认 `none`：
+
+```typst
+#header(
+  photo_path: "assets/photo.jpg",
+  name: "姓名",
+  tags: "标签",
+)
+```
+
+- `photo_path` 支持项目中的本地图片路径（例如 `assets/photo.jpg`）。Typst 的 `image` 不会直接从 URL 下载图片；Web 编辑器项目请先上传照片资源，再使用其项目路径。
+- 照片固定在首页右上角，默认 `24mm × 32mm`，使用白色底框并避开首页开头的正文区域。
+- 有照片时页面顶部留白为 `18mm`，无照片为 `15mm`。
+- `fit: "cover"` 会保持照片比例并居中填满框，超出部分自动裁剪，无需额外 Python 脚本。
+- 当前照片模式会隐藏姓名行右侧原有的彩色标记，并保留原背景纹理；P2/P3 装饰资源到位后可替换该区域。建议使用竖版证件照。
+- `phone`、`email`、`github` 全部为 `none` 时，Header 仅在整体底部添加 `3pt` 间距；只要有一项联系方式，就在姓名区与联系方式间及 Header 底部各添加 `3pt` 间距。
